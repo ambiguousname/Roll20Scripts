@@ -80,7 +80,7 @@ on("change:campaign:turnorder", function(obj) {
 on("chat:message", function(msg){
     if(msg.type === "api" && playerIsGM(msg.playerid)){
         if(msg.content.indexOf("!pt ") !== -1){
-            sendChat("Patrol.js", "Analyzing Patrol Pattern...");
+            sendChat("Patrol.js", "Analyzing Command...");
             log("SUP");
             var args = parseString(msg.content, " ");
             var guards = findObjs({name: args[1]});
@@ -95,7 +95,7 @@ on("chat:message", function(msg){
                 tGuards.push(g);
                 state.tPatrol.guards.push(g);
                 setPatrol(g.coords, g);
-                sendChat("Patrol.js", "Setting Parameters...");
+                sendChat("Patrol.js", "Creating patrol...");
             });
         } else if (msg.content.indexOf("!stoppt ") !== -1){
             var args = parseString(msg.content, " ");
