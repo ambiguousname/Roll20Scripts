@@ -11,6 +11,10 @@ Args 1: The name of token(s) to patrol. The name should have no spaces, and shou
 
 Args 2: The coordinate pairs. The coordinate pairs are represented as follows: x,y:x,y:x,y (etc.)
 
+### IMPORTANT NOTE:
+
+The x and y coordinates start at 0,0. The coordinates are also relative to the token itself, so 0,0 represents the token's starting position when you set the patrol. So -1,-1 represents a move to the left and up, while 1,1 represents a move to the right and down.
+
 - !stoppt <args1>
 
 Stops a patrol.
