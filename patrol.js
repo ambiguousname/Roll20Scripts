@@ -4,7 +4,7 @@
 //Requires commandParse.js
 //Typical command: !pt <arg1> <arg2>
 //arg1 = The name (or name(s)) of the tokens to patrol.
-//arg2 = Coordinate pairs. Stylized: x,y:x2,y2:x3,y3
+//arg2 = Coordinate pairs. Stylized: x,y:x2,y2:x3,y3 //Keep in mind, these coordinates are relative to the guard's position. And they start at 0, 0
 function distanceToPixels(dist) {
 	var PIX_PER_UNIT = 70;
 	return PIX_PER_UNIT * dist;
@@ -28,24 +28,23 @@ function setPatrol(coordArr, guard, ms){
     // sendChat("Patrol.js", "Guard is patrolling: " + guard.patrol);
     sendChat("Patrol.js", "Guard is at: " + (guard.get("left")/distanceToPixels(1)) + ", " + (guard.get("left")/distanceToPixels(1)) + ".")
     if(guard.patrol === true){
-        var index = 0;
         var prevPos = parseString(coordArr[0], ",");
         var countUp = true;
         guard.int = setInterval(function(){
             //Increment and decrement index
-            var coord = parseString(coordArr[index], ",");
+            var coord = parseString(coordArr[guard.index], ",");
             var dist = [parseInt(coord[0]) - parseInt(prevPos[0]),parseInt(coord[1]) - parseInt(prevPos[1])];
             guard.set("left", guard.get("left") + distanceToPixels(dist[0]));
             guard.set("top", guard.get("top") + distanceToPixels(dist[1]));
             prevPos = coord;
             if(countUp === true){
-                index += 1;
-                if(index > coordArr.length - 2){
+                guard.index += 1;
+                if(guard.index > coordArr.length - 2){
                     countUp = false;
                 }
             } else {
-                index -= 1;
-                if(index < 1){
+                guard.index -= 1;
+                if(guard.index < 1){
                     countUp = true;
                 }
             }
@@ -53,7 +52,7 @@ function setPatrol(coordArr, guard, ms){
     }
 }
 on("chat:message", function(msg){
-    if(msg.type === "api"){
+    if(msg.type === "api" && playerIsGM(msg.playerid)){
         if(msg.content.indexOf("!pt ") !== -1){
             sendChat("Patrol.js", "Analyzing Patrol Pattern...");
             log("SUP");
@@ -63,7 +62,7 @@ on("chat:message", function(msg){
             _.each(guards, function(g){
                 sendChat("Patrol.js", "Guard " + g.get("name") + " found.");
                 g.patrol = true;
-                g.index = state.tPatrol.guards.length;
+                g.index = 0;
                 g.coords = parseString(args[2], ":");
                 setPatrol(g.coords, g, 1000);
                 sendChat("Patrol.js", "Setting Parameters...");
@@ -86,6 +85,16 @@ on("chat:message", function(msg){
                 g.patrol = true;
                 setPatrol(g.coords, g, 1000);
                 sendChat("Patrol.js", "Starting patrol for one guard with name " + args[1] + ".");
+            });
+        } else if (msg.content.indexOf("!clearpt ") !== -1){
+            var args = parseString(msg.content, " ");
+            var guards = findObjs({name: args[1]});
+            sendChat("Patrol.js", "Found " + guards.length + " guard(s) with name " + args[1] + ".");
+            _.each(guards, function(g){
+                clearInterval(g.int);
+                g = null;
+                log(state.tPatrols.guards);
+                sendChat("Patrol.js", "Clearing patrol for one guard with name " + args[1] + ".");
             });
         }
     }
