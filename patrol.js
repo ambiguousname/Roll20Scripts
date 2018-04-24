@@ -58,7 +58,7 @@ on("change:campaign:turnorder", function(obj) {
         tGuards.forEach(function(guard){
             if(guard.get("_id") === turn[0].id && guard.patrol){
                 var coord = parseString(guard.coords[guard.index], ",");
-                var dist = [parseInt(coord[0]) - parseInt(guard.prevPos[0]),parseInt(coord[1]) - parseInt(guard.prevPos[1])];
+                var dist = [parseInt(coord[0], 10) - parseInt(guard.prevPos[0], 10),parseInt(coord[1], 10) - parseInt(guard.prevPos[1], 10)];
                 guard.set("left", guard.get("left") + distanceToPixels(dist[0]));
                 guard.set("top", guard.get("top") + distanceToPixels(dist[1]));
                 guard.prevPos = coord;
