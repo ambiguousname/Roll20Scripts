@@ -3,7 +3,7 @@ I like to play pen &amp; paper RPGs, and I like to tinker with Roll20. This is j
 
 ### Patrol.js
 A few commands:
-- !pt <args1> <args2>
+- `!pt <args1> <args2>`
 
 Creates a patrol. The patrol begins immediately.
 
@@ -15,25 +15,25 @@ Args 2: The coordinate pairs. The coordinate pairs are represented as follows: x
 
 The x and y coordinates start at 0,0. The coordinates are also relative to the token itself, so 0,0 represents the token's starting position when you set the patrol. So -1,-1 represents a move to the left and up, while 1,1 represents a move to the right and down.
 
-- !stoppt <args1>
+- `!stoppt <args1>`
 
 Stops a patrol.
 
 Args 1: The name of the token(s) to stop patrolling (should already have a patrol set).
 
-- !startpt <args1>
+- `!startpt <args1>`
 
 Starts a patrol
 
 Args 1: The name of the token(s) to start patrolling (should already have a patrol set).
 
-- !clearpt <args1>
+- `!clearpt <args1>`
 
 Clear a patrol
 
 Args 1: The name of the token(s) to clear patrol behavior (should already have a patrol set).
 
-- !initpt <args1> <args2>
+- `!initpt <args1> <args2>`
 
 Settings for patrol.js
 
