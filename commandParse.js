@@ -25,22 +25,4 @@ on("ready", function(){
         }
         return args;
     }
-    //Too lazy to rename stuff.
-    parseQString = function(string, specialChar){
-        var fullStr = "";
-        var nString = "";
-        for(var i in string){
-            var char = string[i];
-            if(char === specialChar){
-                fullStr += nString;
-                nString = " ";
-            } else if (parseInt(i) === string.length - 1){
-                nString += char;
-                fullStr += nString;
-            } else {
-                nString += char;
-            }
-        }
-        return fullStr;
-    }
 });
