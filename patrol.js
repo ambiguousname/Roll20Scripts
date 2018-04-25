@@ -54,11 +54,12 @@ function setPatrol(coordArr, guard){
 }
 on("change:campaign:turnorder", function(obj) {
     var turn = JSON.parse(Campaign().get("turnorder"));
-    if(turn.length > 0){
+    //Only works if turn window is open
+    if(Campaign().get('initiativepage') === true){
         tGuards.forEach(function(guard){
             if(guard.get("_id") === turn[0].id && guard.patrol){
                 var coord = parseString(guard.coords[guard.index], ",");
-                var dist = [parseInt(coord[0], 10) - parseInt(guard.prevPos[0], 10),parseInt(coord[1], 10) - parseInt(guard.prevPos[1], 10)];
+                var dist = [parseInt(coord[0]) - parseInt(guard.prevPos[0]),parseInt(coord[1]) - parseInt(guard.prevPos[1])];
                 guard.set("left", guard.get("left") + distanceToPixels(dist[0]));
                 guard.set("top", guard.get("top") + distanceToPixels(dist[1]));
                 guard.prevPos = coord;
@@ -81,6 +82,7 @@ on("chat:message", function(msg){
     if(msg.type === "api" && playerIsGM(msg.playerid)){
         if(msg.content.indexOf("!pt ") !== -1){
             sendChat("Patrol.js", "Analyzing Command...");
+            log("SUP");
             var args = parseString(msg.content, " ");
             var guards = findObjs({name: args[1]});
             sendChat("Patrol.js", "Found " + guards.length + " guard(s) with name " + args[1] + ".");
@@ -101,9 +103,7 @@ on("chat:message", function(msg){
             var guards = findObjs({name: args[1]});
             sendChat("Patrol.js", "Found " + guards.length + " guard(s) with name " + args[1] + ".");
             _.each(guards, function(g){
-                if(state.tPatrol.turnBased){
-                    clearInterval(g.int);
-                }
+                clearInterval(g.int);
                 g.patrol = false;
                 sendChat("Patrol.js", "Stopping patrol for one guard with name " + args[1] + ".");
             });
@@ -113,9 +113,7 @@ on("chat:message", function(msg){
             sendChat("Patrol.js", "Found " + guards.length + " guard(s) with name " + args[1] + ".");
             _.each(guards, function(g){
                 g.patrol = true;
-                if(state.tPatrol.turnBased === false){
-                    setPatrol(g.coords, g);
-                }
+                setPatrol(g.coords, g);
                 sendChat("Patrol.js", "Starting patrol for one guard with name " + args[1] + ".");
             });
         } else if (msg.content.indexOf("!clearpt ") !== -1){
@@ -123,11 +121,7 @@ on("chat:message", function(msg){
             var guards = findObjs({name: args[1]});
             sendChat("Patrol.js", "Found " + guards.length + " guard(s) with name " + args[1] + ".");
             _.each(guards, function(g){
-                if(state.tPatro.turnBased === false){
-                    clearInterval(g.int);
-                }
-                tGuards.splice(tGuards.indexOf(g), 1);
-                state.tPatrol.guards.splice(state.tPatrol.guards.indexOf(g), 1);
+                clearInterval(g.int);
                 g = null;
                 log(state.tPatrol.guards);
                 sendChat("Patrol.js", "Clearing patrol for one guard with name " + args[1] + ".");

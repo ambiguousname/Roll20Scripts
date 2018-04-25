@@ -4,7 +4,6 @@ I like to play pen &amp; paper RPGs, and I like to tinker with Roll20. This is j
 ### Patrol.js
 A few commands:
 - `!pt <args1> <args2>`
-
 Creates a patrol. The patrol begins immediately.
 
 Args 1: The name of token(s) to patrol. The name should have no spaces, and should be unique from tokens that aren't going to be patrolling. The tokens will all take the same path.
