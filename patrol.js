@@ -128,15 +128,15 @@ on("chat:message", function(msg){
             });
         } else if (msg.content.indexOf("!initpt ") !== -1){
             var args = parseString(msg.content, " ");
-            if(args[1] == true){
+            if(args[1] === "1"){
                 state.tPatrol.turnBased = true;
-            } else if (args[1] == false) {
+            } else if (args[1] === "0") {
                 state.tPatrol.turnBased = false;
                 if(args[2]){
                     state.tPatrol.ms = args[2];
                 }
             }
-            sendChat("Patrol.js", "Patrol is turn based: " + state.tPatrol.turnbased);
+            sendChat("Patrol.js", "Patrol is turn based: " + state.tPatrol.turnBased);
         }
     }
 });
