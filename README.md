@@ -1,7 +1,7 @@
 # Roll20Scripts
 I like to play pen &amp; paper RPGs, and I like to tinker with Roll20. This is just for me to post experimental scripts. Feel free to use 'em if you find them useful. If you need help with any of the scripts, just put up an issue in the issue tracker. Thanks.
 
-### Patrol.js
+## Patrol.js
 A few commands:
 - `!pt <args1> <args2>`
 Creates a patrol. The patrol begins immediately.
@@ -39,3 +39,5 @@ Settings for patrol.js
 Args1: Whether or not patrol.js should be based on turns. "1" for "yes, I want this to based on turns" and "0" for "I want this to be in real-time". (1 by default)
 
 Args2: If arg1 is false, then this sets the milisecond delay between moves for patrollers. (Default is 1000 miliseconds before moving).
+## Combat.js
+Unwritten, because it is unfinished.
