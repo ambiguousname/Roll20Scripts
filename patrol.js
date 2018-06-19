@@ -34,6 +34,49 @@ function setPatrol(coordArr, guard){
                 //Increment and decrement index
                 var coord = parseString(coordArr[guard.index], ",");
                 var dist = [parseInt(coord[0]) - parseInt(prevPos[0]),parseInt(coord[1]) - parseInt(prevPos[1])];
+                var rotateRight = (guard.get("left") + distanceToPixels(dist[0])) - guard.get("left");
+                var rotateTop = (guard.get("top") + distanceToPixels(dist[1])) - guard.get("top");
+                var right = 0;
+                var up = 0;
+                if(rotateRight > 0){
+                    right = 1;
+                } else if (rotateRight < 0){
+                    right = -1;
+                }
+                if(rotateTop > 0){
+                    up = 1;
+                } else if (rotateTop < 0){
+                    up = -1;
+                }
+                var rot = 0;
+                //Lots of if statements, but I'm too lazy to make it proper.
+                if(up === -1){
+                    if(right === 1){
+                        rot = -135;
+                    } else if (right === 0){
+                        rot = 180;
+                    } else if (right === -1){
+                        rot = 135;
+                    }
+                } else if (up === 0){
+                    if(right === 1){
+                        rot = 90;
+                    } else if (right === 0){
+                        rot = guard.get("rotation");
+                    } else if (right === -1){
+                        rot = -90;
+                    }
+                } else if (up === 1){
+                    if(right === 1){
+                        rot = -45;
+                    } else if (right === 0){
+                        rot = 0;
+                    } else if (right === -1){
+                        rot = 45;
+                    }
+                }
+                log(rot);
+                guard.set("rotation", rot);
                 guard.set("left", guard.get("left") + distanceToPixels(dist[0]));
                 guard.set("top", guard.get("top") + distanceToPixels(dist[1]));
                 prevPos = coord;
@@ -60,6 +103,49 @@ on("change:campaign:turnorder", function(obj) {
             if(guard.get("_id") === turn[0].id && guard.patrol){
                 var coord = parseString(guard.coords[guard.index], ",");
                 var dist = [parseInt(coord[0]) - parseInt(guard.prevPos[0]),parseInt(coord[1]) - parseInt(guard.prevPos[1])];
+                var rotateRight = (guard.get("left") + distanceToPixels(dist[0])) - guard.get("left");
+                var rotateTop = (guard.get("top") + distanceToPixels(dist[1])) - guard.get("top");
+                var right = 0;
+                var up = 0;
+                if(rotateRight > 0){
+                    right = 1;
+                } else if (rotateRight < 0){
+                    right = -1;
+                }
+                if(rotateTop > 0){
+                    up = 1;
+                } else if (rotateTop < 0){
+                    up = -1;
+                }
+                var rot = 0;
+                //Lots of if statements, but I'm too lazy to make it proper.
+                if(up === -1){
+                    if(right === 1){
+                        rot = 135;
+                    } else if (right === 0){
+                        rot = 180;
+                    } else if (right === -1){
+                        rot = -135;
+                    }
+                } else if (up === 0){
+                    if(right === 1){
+                        rot = 90;
+                    } else if (right === 0){
+                        rot = guard.get("rotation");
+                    } else if (right === -1){
+                        rot = -90;
+                    }
+                } else if (up === 1){
+                    if(right === 1){
+                        rot = 45;
+                    } else if (right === 0){
+                        rot = 0;
+                    } else if (right === -1){
+                        rot = -45;
+                    }
+                }
+                log(rot);
+                guard.set("rotation", rot);
                 guard.set("left", guard.get("left") + distanceToPixels(dist[0]));
                 guard.set("top", guard.get("top") + distanceToPixels(dist[1]));
                 guard.prevPos = coord;
@@ -128,15 +214,15 @@ on("chat:message", function(msg){
             });
         } else if (msg.content.indexOf("!initpt ") !== -1){
             var args = parseString(msg.content, " ");
-            if(args[1] == true){
+            if(args[1] === "1"){
                 state.tPatrol.turnBased = true;
-            } else if (args[1] == false) {
+            } else if (args[1] === "0") {
                 state.tPatrol.turnBased = false;
                 if(args[2]){
                     state.tPatrol.ms = args[2];
                 }
             }
-            sendChat("Patrol.js", "Patrol is turn based: " + state.tPatrol.turnbased);
+            sendChat("Patrol.js", "Patrol is turn based: " + state.tPatrol.turnBased);
         }
     }
 });

@@ -36,6 +36,6 @@ Args 1: The name of the token(s) to clear patrol behavior (should already have a
 
 Settings for patrol.js
 
-Args1: Whether or not patrol.js should be based on turns. "true" for "yes, I want this to based on turns" and "false" for "I want this to be in real-time". (true by default)
+Args1: Whether or not patrol.js should be based on turns. "1" for "yes, I want this to based on turns" and "0" for "I want this to be in real-time". (1 by default)
 
 Args2: If arg1 is false, then this sets the milisecond delay between moves for patrollers. (Default is 1000 miliseconds before moving).
